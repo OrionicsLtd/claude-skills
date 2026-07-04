@@ -6,8 +6,8 @@ description: >-
   or running quality checks — trigger on any file edit, package install, or review
   of code structure. Keep modules small and focused, reuse before adding, name
   things professionally, type-hint and document every function, comment the WHY
-  not the what, use the repo's existing tooling (uv/poetry, ruff), and lint after
-  every change. Aim for the smallest change that reads like the surrounding code.
+  not the what, use the repo's existing tooling (uv/poetry, ruff etc for Python),
+  and lint after every change. Aim for the smallest change that reads like the surrounding code.
 ---
 
 # Coding standards
@@ -18,12 +18,17 @@ review without comments. Before writing, read enough of the surrounding code to
 **match its idiom** — naming, structure, comment density, error handling. New code
 should look like it was always there, not like it was pasted from elsewhere.
 
+**Vocabulary note:** examples below use Python terms: *module* = source file,
+*subpackage* = directory of modules. Substitute your language's equivalent:
+file/directory in TS/JS, file/package in Go and Java, file/module in Rust
+(with `mod.rs`), etc. The principles are the same.
+
 ## Use the repo's existing tooling
 
 Don't introduce new tools — find what the repo already uses and use it:
 
-- **Dependencies & commands** through the project's manager (`uv`, `poetry`) —
-  check `pyproject.toml` / lockfile first. Never `pip install` into a `uv` project.
+- **Dependencies & commands** through the project's manager (`uv`/`poetry` in Python,
+  `npm`/`pnpm`/`yarn` in JS/TS, `go mod` in Go, `cargo` in Rust, etc.) — check the project's manifest and lockfile first. Never `pip install` into a `uv` project.
 - **Format & lint after every change** with the repo's configured tool (`ruff format`, `ruff check`,
   etc.) — run it before considering an edit done, and run the type checker / tests
   if the repo has them. Adding a dependency is itself a real decision — keep it
@@ -32,11 +37,13 @@ Don't introduce new tools — find what the repo already uses and use it:
 ## Small, focused modules
 
 - Aim for **under ~200 lines per file**. When a file grows past that, it's usually
-  doing too much — split it along its natural seams. A long file is a smell that a
-  concept is hiding inside another.
-- **One concept per module**, named for it: `categorisation.py`, not
-  `utils_and_helpers.py`. A `utils`/`helpers` grab-bag is where cohesion goes to
-  die — give things a real home.
+  doing too much — split it along its natural seams. When the pieces cluster
+  around one theme, promote them into a subpackage (a directory with `__init__.py`).
+  A long file is a smell that a concept is hiding inside another.
+- **One concept per module, one theme per subpackage.** Name each for what it
+  holds — `parsers.py`, not `utils_and_helpers.py`; `billing/`, not `misc/`.
+  `utils`/`helpers`/`common`/`shared`/`misc` at either level is where cohesion
+  goes to die — give things a real home.
 - **Group by feature, not by layer-within-layer.** Keep the things that change
   together close together.
 

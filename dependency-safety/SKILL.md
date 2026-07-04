@@ -22,8 +22,8 @@ change nothing.
   existing dependency over a new package for a few lines of functionality.
 - **Don't upgrade unrelated packages** — a bump that isn't part of the task is
   scope creep and a review burden. Leave it out.
-- **Don't regenerate the lockfile casually** — `uv lock`/`uv sync` (or `npm
-  install`, `poetry update`, `cargo update`) can silently re-resolve dozens of
+- **Don't regenerate the lockfile casually** — `uv lock`/`uv sync` (or `npm install`,
+  `poetry update`, `cargo update`) can silently re-resolve dozens of
   transitive deps. Regenerate only when you mean to, then review the diff.
 
 ## Review the lockfile diff
